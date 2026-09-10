@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CurrDiT | Real-World Old-Photo Face Restoration</title>
+  <meta name="description" content="CurrDiT restores old-photo faces with feedback-driven curriculum learning and degradation-aware diffusion transformers. Explore the method, results and VintagePortraits.">
+  <meta name="theme-color" content="#2336a5">
+  <meta name="citation_title" content="Curriculum-Driven Degradation-Aware Diffusion Transformers for Real-World Old-Photo Face Restoration">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CurrDiT — Real-World Old-Photo Face Restoration">
+  <meta property="og:description" content="Learning from easy to hard degradations to restore damaged and naturally aged portraits.">
+  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <script defer src="static/js/index.js"></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="site-header">
+    <nav class="page-width top-nav" aria-label="Main navigation">
+      <a class="wordmark" href="#main">Curr<span>DiT</span><span class="wordmark-dot" aria-hidden="true">.</span></a>
+      <div class="nav-links"><a href="#overview">Overview</a><a href="#method">Method</a><a href="#results">Results</a><a href="#dataset">Dataset</a></div>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero paper-hero" aria-labelledby="paper-title">
+      <div class="hero-body page-width has-text-centered">
+        <p class="eyebrow">REAL-WORLD OLD-PHOTO FACE RESTORATION</p>
+        <div class="project-name">CurrDiT</div>
+        <h1 class="publication-title" id="paper-title">Curriculum-Driven Degradation-Aware<br class="desktop-break"> Diffusion Transformers for Real-World<br class="desktop-break"> Old-Photo Face Restoration</h1>
+        <p class="hero-summary">Learning from easy to hard degradations.<br class="mobile-break"> Repairing local damage with reliable global context.</p>
+        <div class="publication-links"><a class="button is-dark" href="#results">Explore results <span aria-hidden="true">↗</span></a><a class="button secondary-button" href="#method">How it works <span aria-hidden="true">↓</span></a></div>
+      </div>
+    </section>
+    <section class="teaser page-width" aria-labelledby="teaser-title">
+      <div class="figure-heading"><h2 id="teaser-title">A closer look at restoration</h2><p>Drag the handle to compare</p></div>
+      <div class="comparison-grid">
+        <figure class="comparison-example">
+          <div class="comparison" style="--split:50%">
+            <img src="static/images/scratches-restored.webp" width="420" height="420" alt="CurrDiT restoration of a portrait with fine scratches" fetchpriority="high">
+            <img class="before" src="static/images/scratches-input.webp" width="420" height="420" alt="Original old-photo portrait with scratches">
+            <span class="image-label label-before">Input</span><span class="image-label label-after">CurrDiT</span>
+            <span class="divider" aria-hidden="true"><span>‹ ›</span></span>
+            <input type="range" min="0" max="100" value="50" aria-label="Compare original and restored portrait with scratches" aria-valuetext="50% original visible">
+          </div><figcaption><span>01</span> Scratches &amp; fading</figcaption>
+        </figure>
+        <figure class="comparison-example">
+          <div class="comparison" style="--split:50%">
+            <img src="static/images/damage-restored.webp" width="420" height="420" alt="CurrDiT restoration of a portrait with physical damage">
+            <img class="before" src="static/images/damage-input.webp" width="420" height="420" alt="Original portrait with creases and structural damage">
+            <span class="image-label label-before">Input</span><span class="image-label label-after">CurrDiT</span>
+            <span class="divider" aria-hidden="true"><span>‹ ›</span></span>
+            <input type="range" min="0" max="100" value="50" aria-label="Compare original and restored portrait with physical damage" aria-valuetext="50% original visible">
+          </div><figcaption><span>02</span> Complex physical damage</figcaption>
+        </figure>
+        <figure class="comparison-example">
+          <div class="comparison" style="--split:50%">
+            <img src="static/images/aging-restored.webp" width="420" height="420" alt="CurrDiT restoration of a naturally aged portrait">
+            <img class="before" src="static/images/aging-input.webp" width="420" height="420" alt="Original faded portrait with low contrast">
+            <span class="image-label label-before">Input</span><span class="image-label label-after">CurrDiT</span>
+            <span class="divider" aria-hidden="true"><span>‹ ›</span></span>
+            <input type="range" min="0" max="100" value="50" aria-label="Compare original and restored naturally aged portrait" aria-valuetext="50% original visible">
+          </div><figcaption><span>03</span> Natural aging &amp; low contrast</figcaption>
+        </figure>
+      </div>
+      <p class="figure-note">Examples from the manuscript’s qualitative comparison. Restored images are model outputs; clean ground truth is unavailable for these real-world photographs.</p>
+      <noscript><p>Enable JavaScript to move the comparison handles. The complete comparison figure is available in the Results section.</p></noscript>
+    </section>
+    <section id="overview" class="section section-overview">
+      <div class="reading-width">
+        <p class="eyebrow">OVERVIEW</p><h2 class="section-title">Restoring faces through time.</h2>
+        <p class="lead">Old photographs carry more than blur and noise. Scratches, cracks, fading and discoloration interact with facial details, making faithful restoration particularly difficult.</p>
+        <h3 class="abstract-title">Abstract</h3>
+        <div class="abstract-text">
+          <p>Real-world old-photo face restoration is severely hindered by the complexity of unknown physical damages and the synthetic-to-real domain gap. While recent Diffusion Transformer (DiT) architectures exhibit powerful generative priors, their static training paradigms treat all degradation levels equally. This inherently leads to a sub-optimal trade-off: over-smoothing on mild degradations and severe identity hallucination on complex physical damages.</p>
+          <p>We propose <strong>CurrDiT</strong>, a curriculum-driven dual-stream DiT framework that dynamically adapts to degradation severity. A feedback-driven curriculum sampling strategy dynamically reweights degradation difficulty according to the evolving training state. A Damage Restoration Branch (DRB) uses damage-specific local cues to repair corrupted regions, while a Global Degradation Restoration Branch (GDRB) uses reliable non-damaged regions to guide global appearance.</p>
+          <p>We further develop a generative degradation synthesis pipeline tailored to old-photo face restoration and construct <strong>VintagePortraits</strong>, a benchmark of naturally aged old-photo portraits. Experiments on old-photo face and blind face restoration benchmarks evaluate perceptual quality, structural fidelity and identity consistency.</p>
+        </div>
+      </div>
+    </section>
+    <section id="method" class="section page-width">
+      <div class="section-heading"><div><p class="eyebrow">THE METHOD</p><h2 class="section-title">Learn progressively.<br>Restore selectively.</h2></div><p class="heading-aside">Feedback-driven sampling and two complementary restoration branches adapt a dual-stream DiT to old-photo degradation.</p></div>
+      <div class="method-points">
+        <article><span class="step-number">01 / CURRICULUM</span><h3>Follow the model’s learning state</h3><p>Combine prior difficulty with per-sample EMA loss. Gradually shift sampling toward harder degradations while maintaining coverage across difficulty levels.</p></article>
+        <article><span class="step-number">02 / LOCAL REPAIR</span><h3>Focus on damaged regions</h3><p>DRB selects the most damage-relevant tokens using a soft confidence map and injects local key-value cues for structural restoration.</p></article>
+        <article><span class="step-number">03 / GLOBAL GUIDANCE</span><h3>Use trustworthy context</h3><p>GDRB excludes damaged conditional tokens from global attention, using intact regions to guide facial structure, color and appearance.</p></article>
+      </div>
+      <figure class="paper-figure architecture-figure"><a href="static/images/architecture.webp" target="_blank" rel="noopener"><img src="static/images/architecture.webp" width="2400" height="913" loading="lazy" alt="Dual-stream DiT architecture showing the global degradation restoration branch and damage restoration branch. Open full-size figure."></a><figcaption><span>Architecture.</span> Joint attention integrates global context with damage-specific local tokens. <span class="expand-hint">Select figure to view full size ↗</span></figcaption></figure>
+      <div class="curriculum-layout"><div><p class="eyebrow">FEEDBACK-DRIVEN CURRICULUM</p><h3>Difficulty evolves<br>as the model learns.</h3><p>Prior difficulty scores are stretched, fused with normalized EMA loss and converted into progressive sampling weights.</p><div class="equation" aria-label="Sampling weight equals one minus progress times one minus difficulty, plus progress times difficulty">w<sub>i</sub> = (1 − p)(1 − α<sub>i</sub>) + pα<sub>i</sub></div><p class="small-copy">p: training progress &nbsp; · &nbsp; α<sub>i</sub>: dynamic sample difficulty</p></div><figure class="paper-figure"><a href="static/images/curriculum.webp" target="_blank" rel="noopener"><img src="static/images/curriculum.webp" width="1800" height="923" loading="lazy" alt="Curriculum pipeline: prior difficulty scoring, score stretching, EMA loss feedback, difficulty fusion and easy-to-hard sampling"></a><figcaption>Feedback-driven curriculum sampling pipeline.</figcaption></figure></div>
+    </section>
+    <section id="results" class="section results-section">
+      <div class="page-width">
+        <div class="section-heading"><div><p class="eyebrow">EXPERIMENTAL RESULTS</p><h2 class="section-title">From visible damage<br>to natural aging.</h2></div><p class="heading-aside">Evaluated on VintageFace, VintagePortraits and three real-world blind face restoration benchmarks.</p></div>
+        <div class="metric-strip"><div><strong>4.5152</strong><span>QAlign ↑</span></div><div><strong>76.78</strong><span>MUSIQ ↑</span></div><div><strong>43.28</strong><span>FID ↓</span></div><p>CurrDiT on<br><b>VintagePortraits</b></p></div>
+        <div class="table-intro"><h3>Quantitative comparison</h3><label for="benchmark">Benchmark <select id="benchmark"><option value="VintagePortraits">VintagePortraits</option><option value="Simple">VintageFace · Simple</option><option value="Medium">VintageFace · Medium</option><option value="Hard">VintageFace · Hard</option><option value="WebPhoto">WebPhoto</option><option value="CelebChild">CelebChild</option><option value="CelebAdult">CelebAdult</option></select></label></div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Benchmark results; scroll horizontally on small screens"><table><caption id="table-caption">VintagePortraits — results reported in the manuscript</caption><thead><tr><th scope="col">Method</th><th scope="col">QAlign ↑</th><th scope="col">MUSIQ ↑</th><th scope="col">TOPIQ ↑</th><th scope="col">MANIQA ↑</th><th scope="col">FID ↓</th></tr></thead><tbody id="results-body"><tr class="baseline"><th scope="row">DDNM</th><td>1.6551</td><td>30.63</td><td>0.3247</td><td>0.2343</td><td>115.57</td></tr><tr class="baseline"><th scope="row">PGDiff</th><td>2.6595</td><td>56.94</td><td>0.4844</td><td>0.3236</td><td>65.13</td></tr><tr class="baseline"><th scope="row">SSDiff</th><td>2.7781</td><td>58.20</td><td>0.5217</td><td>0.3430</td><td>61.67</td></tr><tr class="baseline"><th scope="row">BOPBTL</th><td>1.9453</td><td>34.81</td><td>0.2639</td><td>0.1835</td><td>100.47</td></tr><tr class="baseline"><th scope="row">GFP-GAN</th><td>2.5772</td><td>55.40</td><td>0.4271</td><td>0.3024</td><td>56.54</td></tr><tr class="baseline"><th scope="row">CodeFormer</th><td>1.5747</td><td>24.98</td><td>0.3525</td><td>0.1831</td><td>154.30</td></tr><tr class="baseline"><th scope="row">DifFace</th><td>2.5063</td><td>52.24</td><td>0.4400</td><td>0.2803</td><td>66.25</td></tr><tr class="baseline"><th scope="row">DiffBIR</th><td>3.9994</td><td>74.96</td><td>0.7520</td><td><strong>0.6448</strong></td><td>52.66</td></tr><tr class="baseline"><th scope="row">InterLCM</th><td>3.8853</td><td>70.55</td><td>0.6559</td><td>0.5206</td><td>54.31</td></tr><tr class="ours"><th scope="row">CurrDiT</th><td><strong>4.5152</strong></td><td><strong>76.78</strong></td><td><strong>0.7666</strong></td><td>0.6102</td><td><strong>43.28</strong></td></tr></tbody></table></div>
+        <p class="figure-note">Bold: best result in each column. ↑ Higher is better. ↓ Lower is better. These unpaired test sets have no clean ground truth; no-reference quality metrics do not by themselves establish identity fidelity.</p>
+        <figure class="paper-figure qualitative"><a href="static/images/comparison.jpg" target="_blank" rel="noopener"><img src="static/images/comparison.jpg" width="4897" height="5167" loading="lazy" alt="Full qualitative comparison: input, DDNM, PGDiff, SSDiff, BOPBTL, GFP-GAN, CodeFormer, DifFace, DiffBIR, InterLCM and CurrDiT on VintageFace and VintagePortraits"></a><figcaption><span>Qualitative comparison.</span> Inputs are shown in the first column and CurrDiT in the last. <span class="expand-hint">Select figure to view full size ↗</span></figcaption></figure>
+      </div>
+    </section>
+    <section id="dataset" class="section page-width">
+      <div class="section-heading"><div><p class="eyebrow">VINTAGEPORTRAITS</p><h2 class="section-title">A benchmark for<br>naturally aged portraits.</h2></div><div class="dataset-count"><strong>1,103</strong><span>real-world old-photo faces</span></div></div>
+      <p class="dataset-description">VintagePortraits complements visibly damaged old-photo benchmarks with naturally aged portraits without prominent structural breakage. It covers fading, blur, low contrast, color shifts, noise and scanning artifacts.</p>
+      <figure class="paper-figure"><a href="static/images/vintageportraits.webp" target="_blank" rel="noopener"><img src="static/images/vintageportraits.webp" width="1800" height="800" loading="lazy" alt="Sample grid from VintagePortraits showing diverse naturally aged old-photo faces"></a><figcaption>Representative images from VintagePortraits, as shown in the manuscript.</figcaption></figure>
+      <details class="degradation-details"><summary>Training data: synthesizing realistic old-photo degradation <span aria-hidden="true">＋</span></summary><div><p>A generative damage-mask pipeline is combined with task-tailored Real-ESRGAN-style degradation. Injecting masks at different stages creates damage with varied sharpness, aging effects and compression artifacts.</p><img src="static/images/degradation.webp" width="1800" height="772" loading="lazy" alt="Examples of synthetic degraded training images produced by the old-photo degradation pipeline"></div></details>
+    </section>
+  </main>
+  <footer class="footer"><div class="page-width footer-content"><div><a class="wordmark" href="#main">Curr<span>DiT</span>.</a><p>Curriculum-driven old-photo face restoration.</p></div><p class="credits">Adapted from <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a><br>and <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>. Website template: <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>.<br>Paper content and figures retain their respective rights.</p></div></footer>
+</body>
+</html>
