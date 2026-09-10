@@ -1,8 +1,0 @@
-{
-  "name": "currdit-project-page",
-  "version": "1.0.0",
-  "private": true,
-  "description": "CurrDiT academic project page, adapted from Academic-project-page-template",
-  "scripts": { "dev": "node scripts/serve.mjs", "build": "node scripts/build.mjs" },
-  "engines": { "node": ">=18" }
-}
